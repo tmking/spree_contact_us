@@ -5,8 +5,8 @@ require File.expand_path("#{path_to_test_store}/config/environment.rb",  __FILE_
 
 require 'rspec/rails'
 require 'rspec/autorun'
-require 'spree/core/testing_support/controller_requests'
-require 'spree/core/url_helpers'
+require 'spree/testing_support/controller_requests'
+require 'spree/testing_support/url_helpers'
 #require 'database_cleaner'
 #require 'capybara/poltergeist'
 
@@ -18,8 +18,8 @@ Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 ActiveRecord::Migrator.migrate File.expand_path("#{path_to_test_store}/db/migrate/", __FILE__)
 
 # Requires factories defined in spree_core
-require 'spree/core/testing_support/factories'
-require 'spree/core/testing_support/authorization_helpers'
+require 'spree/testing_support/factories'
+require 'spree/testing_support/authorization_helpers'
 
 RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
@@ -30,7 +30,7 @@ RSpec.configure do |config|
   #
   # visit spree.admin_path
   # current_path.should eql(spree.products_path)
-  config.include Spree::Core::UrlHelpers
+  config.include Spree::TestingSupport::UrlHelpers
   # == Mock Framework
   #
   # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
@@ -47,5 +47,5 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 
-  config.include Spree::Core::TestingSupport::ControllerRequests, :type => :controller
+  config.include Spree::TestingSupport::ControllerRequests, :type => :controller
 end

@@ -2,17 +2,20 @@ require 'spec_helper'
 
 # https://github.com/spree/spree/blob/5103b91fccfea93572a8611e8f374ddba6c04e95/core/lib/spree/core/testing_support/controller_requests.rb
 describe Spree::InquiriesController do
+  let(:params) do
+    { inquiry: { name: 'John Doe', message: 'I wish to contact you.' } }
+  end
 
   it "responds to #new" do
     spree_get :new
   end
 
   it "can POST to #create" do
-    spree_post :create
+    spree_post :create, params
   end
 
   it "on create, inquiry gets env vars" do
-    spree_post :create
+    spree_post :create, params
     inquiry = assigns(:inquiry)
     inquiry.should_not be_nil
     inquiry.http_user_agent.should == controller.request.env['HTTP_USER_AGENT']
@@ -29,7 +32,7 @@ describe Spree::InquiriesController do
 
     context "when valid," do
       it "should be successful" do
-        spree_post :create
+        spree_post :create, params
         response.should be_redirect
       end
     end
@@ -40,7 +43,7 @@ describe Spree::InquiriesController do
       end
 
       it "should set the flash accrdingly" do
-        spree_post :create
+        spree_post :create, params
         response.should render_template(:new)
       end
     end
@@ -58,14 +61,14 @@ describe Spree::InquiriesController do
 
     context "when valid," do
       it "should be successful" do
-        spree_post :create
+        spree_post :create, params
         response.should be_redirect
       end
     end
 
     context "when invalid," do
       it "should set the flash" do
-        spree_post :create, :honey => 'LUV HONEY!'
+        spree_post :create, params.merge(:honey => 'LUV HONEY!')
         response.should render_template(:new)
         flash[:captcha_error].should_not be_blank
       end

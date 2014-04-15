@@ -15,10 +15,9 @@ describe Spree::Inquiry do
 
   context "saving an Inquiry," do
     before do
-      Spree::MailMethod.stub(:current => mock(:preferred_mail_bcc => 'admin@example.com',
-                                              :preferred_mails_from => 'test@example.com',
-                                              :preferred_intercept_email => nil))
-
+      Spree::Config[:mail_bcc] = 'test@example.com'
+      Spree::Config[:mails_from] = 'admin@example.com'
+      Spree::Config[:intercept_email] = nil
     end
 
     it "sends the emails" do
